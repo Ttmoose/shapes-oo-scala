@@ -1,0 +1,69 @@
+Project 1a - Detailed evaluation
+GitHub ID: Ttmoose
+Repository: Ttmoose--shapes-oo-scala
+Commit evaluated: fb0f911d3c8dc1d974fc8d52823d2ddfbf7c9ecb
+Evaluation date: 2026-09-16
+FINAL GRADE: 0.0 points (6.0 required points; up to 3.0 extra credit)
+
+Build and test verification
+Command: sbt -batch -Dsbt.supershell=false test; exit code 1.
+Environment: sbt.version=1.13.0; Eclipse Adoptium Java 25.0.4.
+Compilation and test execution verified: 2 tests, 0 passed, 2 failed, 0 errors.
+The test command was run on the submitted sources, without repairing student code.
+  TestBoundingBox: 2 tests, 2 failures, 0 errors
+Full log: ../.grading/logs/Ttmoose--shapes-oo-scala.log
+
+Required rubric
+1. Missing shape cases: 0.0/0.5
+   Ellipse and Group cases are still missing.
+   Evidence: src/main/scala/shapes.scala:4
+2. boundingBox: 0.0/1.0
+   The original wildcard placeholder always returns Location(0,0,Rectangle(0,0)); both enabled tests fail.
+   Evidence: src/main/scala/boundingBox.scala:7
+3. Constructor validation with tests: 0.0/0.5
+   No constructor checks or validity tests.
+   Evidence: No corresponding source/test implementation found.
+4. size: 0.0/0.5
+   No size behavior.
+   Evidence: No corresponding source/test implementation found.
+5. height: 0.0/0.5
+   No height behavior.
+   Evidence: No corresponding source/test implementation found.
+6. scale: 0.0/0.5
+   No scale behavior.
+   Evidence: No corresponding source/test implementation found.
+7. Collection operations: 0.0/0.5
+   No collection-based bounding-box implementation.
+   Evidence: src/main/scala/boundingBox.scala:7
+8. TestSize: 0.0/0.5
+   No TestSize suite.
+   Evidence: No corresponding source/test implementation found.
+9. TestHeight: 0.0/0.5
+   No TestHeight suite.
+   Evidence: No corresponding source/test implementation found.
+10. TestScale: 0.0/0.5
+   No TestScale suite.
+   Evidence: No corresponding source/test implementation found.
+11. Configurable library logging: 0.0/0.5
+   No logging library usage.
+   Evidence: No corresponding source/test implementation found.
+
+Required subtotal: 0.0/6.0
+
+Deductions
+Skeleton incompatibility: -0.0. No substantive incompatible changes to the supplied skeleton found.
+AI record: -1.0. No AI transcript, substantive disclosure, or no-AI affidavit found.
+
+Extra credit
+draw behavior: +0.0/2.0. No draw behavior submitted.
+Offline BufferedImage tests: +0.0/1.0. No automated BufferedImage tests submitted.
+
+Calculation: 0.0 - 1.0 + 0.0 = -1.0.
+Final grade is floored at 0.0; the deduction is recorded but does not create a negative grade.
+Final grade: 0.0
+
+General evaluation
+The checked-out submission remains the original skeleton. It compiles and executes the two starter tests, but both fail because boundingBox is still a placeholder. The required implementation and supporting tests need to be completed.
+
+Grading conventions
+Partial rubric credit uses 0.2 increments (0.2/0.4, or full 0.5); extra credit uses 0.5 increments. Tests are assessed individually when compilation and execution succeed. Passing tests do not earn credit for incorrect expectations or missing required coverage. Compatible refactoring is not penalized. Substantive AI summaries/prompt lists are accepted; outside-doc placement costs 0.2, and a missing record costs 1.0 instead. Either consistent edge-count or node-count tree height is accepted. Positive-only versus nonnegative dimension policies, integer scale factors, and unspecified empty-group edge behavior are not independently penalized. Extra credit is added without capping at 6.0.
