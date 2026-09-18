@@ -15,7 +15,7 @@ enum Shape derives CanEqual:
  
   def draw: Picture[Unit] = this match
     case Rectangle(width, height) =>
-      Picture.rectangle.require(width.toDouble, height.toDouble).strokeColor(Color.black)
+      Picture.rectangle(width.toDouble, height.toDouble).strokeColor(Color.black)
 
     case Ellipse(semiMajorAxis, semiMinorAxis) =>
       Picture.circle(semiMajorAxis.toDouble * 2).strokeColor(Color.black)
