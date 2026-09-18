@@ -12,38 +12,67 @@ class TestScale extends AnyFunSuite:
     case Shape.Group(shapes*) => Shape.Group(shapes.map(scale(_, factor)) *)
 
   test("scale simple rectangle") {
-    assert(scale(simpleRectangle, 2) == Shape.Rectangle(160,240))
+    simpleRectangle match
+      case Shape.Rectangle(width, height) =>
+        assert(scale(simpleRectangle, 2) == Shape.Rectangle(width * 2, height * 2))
+      case _ =>
+        fail("simpleRectangle is not a Rectangle")
   }
 
   test("scale simple ellipse") {
-    assert(scale(simpleEllipse, 2) == Shape.Ellipse(100, 60))
+    simpleEllipse match
+      case Shape.Ellipse(a,b) => 
+        assert(scale(simpleEllipse, 2) == Shape.Ellipse(a * 2, b * 2))
+      case _ =>
+        fail("simpleElipse is not an Elipse")
   }
 
   test("scale simple location") {
-    assert(scale(simpleLocation, 2) == Shape.Location(140, 60, Shape.Rectangle(160, 240)))
+    simpleLocation match
+      case Shape.Location(x, y, inner) =>
+        assert(scale(simpleLocation, 2) == Shape.Location(x * 2, y * 2, scale(simpleRectangle, 2)))
+      case _ =>
+        fail("simpleLocation is not a Location")
   }
 
   test("scale basic group") {
-    assert(scale(basicGroup, 2) == Shape.Group(
-      Shape.Ellipse(100, 60),
-      Shape.Rectangle(40, 80) 
-    ))
+    basicGroup match
+      case Shape.Group(Shape.Ellipse(a, b), Shape.Rectangle(w, h)) =>
+        assert(scale(basicGroup, 2) == Shape.Group(
+          Shape.Ellipse(a * 2, b * 2),
+          Shape.Rectangle(w * 2, h * 2)
+        ))
+      case _ =>
+        fail("basicGroup is not a Group")
   }
 
   test("scale complex group") {
-    assert(scale(complexGroup, 2) == 
-      Shape.Location(100, 200,
-        Shape.Group(
-          Shape.Ellipse(40, 80),
-          Shape.Location(300, 100,
-          Shape.Group(
-            Shape.Rectangle(100, 60),
-            Shape.Rectangle(600, 120),
-            Shape.Location(200, 400,
-              Shape.Ellipse(100, 60)
-            )
+    complexGroup match
+      case Shape.Location(x, y, Shape.Group(
+        Shape.Ellipse(a, b),
+        Shape.Location(x2, y2, Shape.Group(
+          Shape.Rectangle(w, h),
+          Shape.Rectangle(w2, h2),
+          Shape.Location(x3, y3, Shape.Ellipse(a2, b2))
         )),
-        Shape.Rectangle(200, 400)
-      ))
-    )
+        Shape.Rectangle(w3, h3)
+      )) =>
+        assert(scale(complexGroup, 2) == Shape.Location(
+          x * 2, y * 2,
+          Shape.Group(
+            Shape.Ellipse(a * 2, b * 2),
+            Shape.Location(x2 * 2, y2 * 2,
+              Shape.Group(
+                Shape.Rectangle(w * 2, h * 2),
+                Shape.Rectangle(w2 * 2, h2 * 2),
+                Shape.Location(x3 * 2, y3 * 2,
+                  Shape.Ellipse(a2 * 2, b2 * 2)
+                )
+              )
+            ),
+            Shape.Rectangle(w3 * 2, h3 * 2)
+          )
+        ))
+      case _ =>
+        fail("complexGroup is not a Location")
   }

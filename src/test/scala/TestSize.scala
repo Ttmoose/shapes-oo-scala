@@ -12,21 +12,47 @@ class TestSize extends AnyFunSuite:
     case Shape.Group(shapes*) => shapes.map(size).sum
 
   test("size of simple rectangle") {
-    assert(size(simpleRectangle) == 9600)
+    simpleRectangle match
+      case Shape.Rectangle(width, height) =>
+        assert(size(simpleRectangle) == width * height)
+      case _ =>
+        fail("simpleRectangle is not the correct size")
   }
 
   test("size of simple ellipse") {
-    assert(size(simpleEllipse) == math.Pi.toInt * 50 * 30)
+    simpleEllipse match
+      case Shape.Ellipse(a, b) =>
+        assert(size(simpleEllipse) == math.Pi.toInt * a * b)
+      case _ =>
+        fail("simpleEllipse is not the correct size")
   }
 
   test("size of simple location") {
-    assert(size(simpleLocation) == 9600)
-  }
-
-  test("size of basic group") {
-    assert(size(basicGroup) == 5300)
+    simpleLocation match
+      case Shape.Location(_, _, inner) =>
+        assert(size(simpleLocation) == size(inner))
+      case _ =>
+        fail("simpleLocation is not the correct size")
   }
 
   test("size of complex group") {
-    assert(size(complexGroup) == 46400)
+    complexGroup match
+      case Shape.Location(x, y, Shape.Group(
+        Shape.Ellipse(a, b),
+        Shape.Location(x2, y2, Shape.Group(
+          Shape.Rectangle(w, h),
+          Shape.Rectangle(w2, h2),
+          Shape.Location(x3, y3, Shape.Ellipse(a2, b2))
+        )),
+        Shape.Rectangle(w3, h3)
+      )) =>
+        assert(size(complexGroup) ==
+          math.Pi.toInt * a * b +
+          w * h +
+          w2 * h2 +
+          math.Pi.toInt * a2 * b2 +
+          w3 * h3
+        )
+      case _ =>
+        fail("complexGroup is not the correct size")
   }

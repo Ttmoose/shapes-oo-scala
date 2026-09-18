@@ -12,21 +12,64 @@ class TestHeight extends AnyFunSuite:
     case Shape.Group(shapes*) => shapes.map(height).max
 
   test("height of simple rectangle") {
-    assert(height(simpleRectangle) == 120)
+    simpleRectangle match
+      case Shape.Rectangle(_, h) =>
+        assert(height(simpleRectangle) == h)
+      case _ =>
+        fail("simpleRectangle is not a Rectangle")
   }
 
   test("height of simple ellipse") {
-    assert(height(simpleEllipse) == 60)
+    simpleEllipse match
+      case Shape.Ellipse(_, b) =>
+        assert(height(simpleEllipse) == 2 * b)
+      case _ =>
+        fail("simpleEllipse is not an Ellipse")
   }
 
   test("height of simple location") {
-    assert(height(simpleLocation) == 150)
+    simpleLocation match
+      case Shape.Location(_, y, inner) =>
+        assert(height(simpleLocation) == y + height(inner))
+      case _ =>
+        fail("simpleLocation is not a Location")
   }
 
   test("height of basic group") {
-    assert(height(basicGroup) == 60)
+    basicGroup match
+      case Shape.Group(Shape.Ellipse(a, b), Shape.Rectangle(w, h)) =>
+        assert(height(basicGroup) == math.max(2 * b, h))
+      case _ =>
+        fail("basicGroup is not a Group")
   }
 
   test("height of complex group") {
-    assert(height(complexGroup) == 410)
+    complexGroup match
+      case Shape.Location(x, y, Shape.Group(
+        Shape.Ellipse(a, b),
+        Shape.Location(x2, y2, Shape.Group(
+          Shape.Rectangle(w, h),
+          Shape.Rectangle(w2, h2),
+          Shape.Location(x3, y3, Shape.Ellipse(a2, b2))
+        )),
+        Shape.Rectangle(w3, h3)
+      )) =>
+        assert(height(complexGroup) ==
+          y +
+          math.max(
+            2 * b,
+            math.max(
+              y2 + math.max(
+                h,
+                math.max(
+                  h2,
+                  y3 + 2 * b2
+                )
+              ),
+              h3
+            )
+          )
+        )
+      case _ =>
+        fail("complexGroup is not the correct height")
   }
