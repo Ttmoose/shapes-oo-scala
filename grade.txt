@@ -1,0 +1,74 @@
+Project 1a - Detailed evaluation
+GitHub ID: Ttmoose
+Repository: Ttmoose--shapes-oo-scala
+Commit evaluated: aaba4e67e36e1f29959fe82e951a31a58e1a9801
+Evaluation date: 2026-10-14
+FINAL GRADE: 4.5 points (6.0 required points; up to 3.0 extra credit)
+
+Build and test verification
+Command: sbt -batch -Dsbt.supershell=false test; exit code 0.
+Environment: sbt.version=1.13.0; Eclipse Adoptium Java 25.0.4.
+Compilation and test execution verified: 26 tests, 26 passed, 0 failed, 0 errors.
+The test command was run on the submitted sources, without repairing student code.
+  TestBoundingBox: 6 tests, 0 failures, 0 errors
+  TestDraw: 6 tests, 0 failures, 0 errors
+  TestHeight: 5 tests, 0 failures, 0 errors
+  TestScale: 5 tests, 0 failures, 0 errors
+  TestSize: 4 tests, 0 failures, 0 errors
+Full log: ../.grading/logs/Ttmoose--shapes-oo-scala.log
+The previously instructor-added project/build.properties (sbt 1.13.0) was used; no deduction for that environment preparation.
+
+Required rubric
+1. Missing shape cases: 0.5/0.5
+   Ellipse and variadic Group cases are added and integrate with the supplied model.
+   Evidence: src/main/scala/shapes.scala:10
+2. boundingBox: 1.0/1.0
+   Recursive rectangle, ellipse, location-offset, and group-union cases give the expected supplied bounding boxes.
+   Evidence: src/main/scala/boundingBox.scala:5
+3. Constructor validation with tests: 0.0/0.5
+   No constructor checks or validity tests.
+   Evidence: No corresponding source/test implementation found.
+4. size: 0.2/0.5
+   Partial credit: recursive traversal unwraps Location and sums Group children, but leaves compute geometric area rather than tree leaf counts (Rectangle returns w*h and Ellipse returns pi*a*b instead of 1). Defined in TestSize.
+   Evidence: src/test/scala/TestSize.scala:8
+5. height: 0.2/0.5
+   Partial credit: recursive traversal computes geometric height rather than tree height (Rectangle returns h, Ellipse returns 2*b, and Location adds y offset instead of incrementing tree depth). Defined in TestHeight.
+   Evidence: src/test/scala/TestHeight.scala:8
+6. scale: 0.5/0.5
+   Recursively scales leaf dimensions, location coordinates, and group members. Defined in TestScale.
+   Evidence: src/test/scala/TestScale.scala:8
+7. Collection operations: 0.5/0.5
+   Uses immutable collection mapping/folding and minimum/maximum aggregation in boundingBox, with sum where appropriate.
+   Evidence: src/main/scala/boundingBox.scala:5
+8. TestSize: 0.2/0.5
+   Four runnable tests pass but validate geometric area expectations rather than tree leaf count requirements; simpleGroup is missing.
+   Evidence: src/test/scala/TestSize.scala:5
+9. TestHeight: 0.2/0.5
+   Five runnable tests pass but validate geometric height expectations rather than tree height requirements; simpleGroup is missing.
+   Evidence: src/test/scala/TestHeight.scala:5
+10. TestScale: 0.4/0.5
+   Five runnable tests pass covering simple rectangle, simple ellipse, simple location, basic group, and complex group; missing the sixth test (simpleGroup).
+   Evidence: src/test/scala/TestScale.scala:5
+11. Configurable library logging: 0.0/0.5
+   Dependencies added to build.sbt, but no logging library usage or debug configuration found in sources.
+   Evidence: No corresponding source/test implementation found.
+
+Required subtotal: 3.7/6.0
+
+Deductions
+Behavior placement: -0.5. size, height, and scale behaviors were placed in their respective test classes rather than main sources.
+AI record: -0.2. README.txt contains an extensive AI interaction log and questions, but is located at the repository root rather than under doc.
+Skeleton incompatibility: -0.0. No substantive incompatible changes to the supplied skeleton found.
+
+Extra credit
+draw behavior: +1.0/2.0. draw behavior is implemented using Doodle, rendering all shape cases. Ellipses are rendered as circles with circle(semiMajorAxis * 2) ignoring minor axis, and rectangles are centered rather than corner-anchored.
+Offline BufferedImage tests: +0.5/1.0. TestDraw renders all supplied fixtures to BufferedImage via ShapeRenderer and saves PNGs, but assertions check only canvas dimensions rather than painted geometry.
+
+Calculation: 3.7 - 0.7 + 1.5 = 4.5.
+Final grade: 4.5
+
+General evaluation
+The updated submission adds the missing shape cases and a functional boundingBox implementation that passes all six supplied test cases using collection operations appropriately. The size, height, and scale behaviors were implemented inside their respective test files instead of in main sources (-0.5 deduction). Under reevaluation, scale works correctly and earns full behavior credit along with 0.4 for 5 passing fixture tests; size and height receive partial behavior credit (0.2 each) because their implementations compute geometric measurements (area and geometric height) instead of tree properties (leaf count and tree height), and their corresponding tests assert those geometric values. Constructor validation and configurable library logging are absent. For extra credit, draw behavior with Doodle and offline BufferedImage testing via ShapeRenderer were implemented and pass with minor geometric discrepancies. AI interaction is thoroughly documented but placed in README.txt at the repository root (-0.2).
+
+Grading conventions
+Partial rubric credit uses 0.2 increments (0.2/0.4, or full 0.5); extra credit uses 0.5 increments. Tests are assessed individually when compilation and execution succeed. Passing tests earn reduced credit for incorrect expectations or missing required coverage. Compatible refactoring is not penalized. Substantive AI summaries/prompt lists are accepted; outside-doc placement costs 0.2, and a missing record costs 1.0 instead. Either consistent edge-count or node-count tree height is accepted. Positive-only versus nonnegative dimension policies, integer scale factors, and unspecified empty-group edge behavior are not independently penalized. Extra credit is added without capping at 6.0.
